@@ -3,8 +3,9 @@
 
 using namespace std;
 
-void add(Node* current, int num);
+void add(Node*& head, Node* current, int num);
 void display(Node* current, int depth);
+bool search(Node* head, int value);
 
 int main() {
     Node* head = NULL;
@@ -21,10 +22,10 @@ int main() {
             fstream fin;
             fin.open("numbers.txt"); 
 
-            int num;
+            int value;
             for (int i = 0; i < n; i++) {
-                fin >> num;
-                add(head, num);
+                fin >> value;
+                add(head, head, value);
                 //cout << num << endl;
             }
 
@@ -36,10 +37,10 @@ int main() {
             int n; cin >> n;
 
             cout << "Enter the integers:" << endl;
-            int num;
+            int value;
             for (int i = 0; i < n; i++) {
-                cin >> num;
-                add(head, num);
+                cin >> value;
+                add(head, head, value);
             }
         }
 
@@ -52,7 +53,14 @@ int main() {
         }
 
         if (strcmp(input, "SEARCH") == 0) {
-            
+            cout << "Enter an integer to search for:" << endl;
+            int value; cin >> value; 
+            if (search(head, value) == true) {
+                cout << "Integer is in the tree!" << endl;
+            }           
+            else {
+                cout << "Integer is not in the tree!" << endl;
+            }
         }
 
         if (strcmp(input, "QUIT") == 0) {
@@ -62,9 +70,9 @@ int main() {
     }
 }
 
-void add(Node* current, int value) {
-    if (current == NULL) { //if tree is empty and head is NULL
-        current = new Node(value);
+void add(Node*& head, Node* current, int value) {
+    if (head == NULL) { //if tree is empty and head is NULL
+        head = new Node(value);
     }
 
     else if (value < current->getValue()) {
@@ -72,7 +80,7 @@ void add(Node* current, int value) {
             current->setLeft(new Node(value));
         }
         else {
-            add(current->getLeft(), value);
+            add(head, current->getLeft(), value);
         }
     }
 
@@ -81,14 +89,18 @@ void add(Node* current, int value) {
             current->setRight(new Node(value));
         }
         else {
-            add(current->getRight(), value);
+            add(head, current->getRight(), value);
         }
     }
 }
 
 void display(Node* current, int depth) {
+    if (current == NULL) {
+        return;
+    }
+
     if (current->getRight() != NULL) {
-        display(current->getRight(), depth + 1);
+        display(current->getRight(), depth+1);
     }
 
     for (int i = 0; i < depth; i++) {
@@ -97,6 +109,26 @@ void display(Node* current, int depth) {
     cout << current->getValue() << endl;
 
     if (current->getLeft() != NULL) {
-        display(current->getLeft(), depth + 1);
+        display(current->getLeft(), depth+1);
     }
 }
+
+bool search(Node* head, int value) {
+    Node* current = head;
+    while (current != NULL) {
+        if (value < current->getValue()) { //if value is less than current than we must go left
+            current = current->getLeft();
+        }
+        else if (value > current->getValue()) { //if value is greater than current than we must go right
+            current = current->getRight();
+        }
+        else if (value == current->getValue()) { //value is found and true is returned
+            return true;
+        }
+    }
+    return false; //if NULL node is reached without finding the value then we know it doesn't exist in the tree
+}
+
+/*
+
+*/
