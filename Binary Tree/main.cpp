@@ -4,7 +4,9 @@ Zayeed Saffat
 This project uses a binary tree to sort integers using nodes. Each node has a left and right child along with a value.
 Credits to Ruby Amyeen for help with the delete function.
 */
-#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <cstring>
 #include "node.h"
 
 using namespace std;
