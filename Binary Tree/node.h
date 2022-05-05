@@ -1,7 +1,9 @@
 #ifndef NODE_H
 #define NODE_H
 
-#include <bits/stdc++.h>
+#include <iostream>
+#include <fstream>
+#include <cstring>
 
 using namespace std;
 
